@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="data-table">
+    <button
+      class="btn btn-primary"
+      (click)="handleEvent('CLICK FETCH')"
+      [disabled]="machine.getCurrentState() == fetched"
+    >
+      Fetch Data
+    </button>
+    <button class="btn btn-warning-outline" (click)="resetData()">
+      Reset Data
+    </button>
+    <clr-datagrid>
+      <clr-dg-column>Name</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let mount of mounts">
+        <clr-dg-cell>{{ mount.Name | titlecase }}</clr-dg-cell>
+      </clr-dg-row>
+
+      <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+          <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"
+            >Mounts per page</clr-dg-page-size
+          >
+          {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of
+          {{ pagination.totalItems }} mounts
+        </clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  </div>
+  <div class="state-tree">
+    <clr-tree-node
+      [clrExpanded]="true"
+      *ngFor="let state of machine.getAllStates()"
+    >
+      <span
+        [ngStyle]="{ color: getStateColor(state)}"
+        ><strong *ngIf="machine.getCurrentState() === state">{{
+          state.data.message
+        }}</strong
+        ><span *ngIf="machine.getCurrentState() !== state">{{
+          state.data.message
+        }}</span></span
+      >
+
+      <clr-tree-node>
+        Transitions
+        <clr-tree-node *ngFor="let transition of state.transitions">
+          {{ transition.nextState.data.message }} on "{{ transition.event }}"
+        </clr-tree-node>
+      </clr-tree-node>
+    </clr-tree-node>
+  </div>
+</div>

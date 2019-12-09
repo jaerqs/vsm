@@ -1,0 +1,16 @@
+.container {
+    width: 800px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex
+}
+
+.state-tree {
+    padding-top: 64px;
+}
+
+.data-table {
+flex-grow: 1;
+margin-right: 10px;
+}
+
